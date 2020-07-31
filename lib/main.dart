@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
-import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:random_gallery/screensize_reducers.dart';
+import 'package:random_gallery/dogs_images.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -16,33 +15,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<List<String>> images = new List();
+  DogsImages dogsImages = new DogsImages();
   ScrollController _scrollController = new ScrollController();
-
-  fetchImages(int index) async {
-    List<String> imagesAux = new List(3);
-
-    Response response1 = await get('https://dog.ceo/api/breeds/image/random');
-    Response response2 = await get('https://dog.ceo/api/breeds/image/random');
-    Response response3 = await get('https://dog.ceo/api/breeds/image/random');
-    if (response1.statusCode == 200 && response2.statusCode == 200 && response3.statusCode == 200) {
-      setState(() {
-        imagesAux[0] = (json.decode(response1.body)['message']);
-        imagesAux[1] = (json.decode(response2.body)['message']);
-        imagesAux[2] = (json.decode(response3.body)['message']);
-      });
-    } else {
-      throw Exception('No se pudo cargar la imágen');
-    }
-
-    images.add(imagesAux);
-  }
-
-  fetchTwelve() {
-    for (int i = 0; i < 4; i++) {
-      fetchImages(i);
-    }
-  }
 
   @override
   void dispose() {
@@ -54,11 +28,11 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
 
-    fetchTwelve();
+    dogsImages.fetchTwelve();
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
-        fetchTwelve();
+        dogsImages.fetchTwelve();
       }
     });
   }
@@ -73,7 +47,7 @@ class _HomeState extends State<Home> {
       ),
       body: ListView.builder(
         controller: _scrollController,
-        itemCount: images.length,
+        itemCount: dogsImages.images.length,
         itemBuilder: (context, index) => 
           Container(
             margin: EdgeInsets.only(top: 8),
@@ -91,7 +65,7 @@ class _HomeState extends State<Home> {
                 viewportFraction: 0.8
               ),
               items: 
-              images[index].map((image) => 
+              dogsImages.images[index].map((image) => 
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
                   child: Image.network('$image')
