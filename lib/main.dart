@@ -25,7 +25,7 @@ class _HomeState extends State<Home> {
         images.add(json.decode(response.body)['message']);
       });
     } else {
-      throw Exception('No se pudo cargar las imágenes');
+      throw Exception('No se pudo cargar la imágen');
     }
   }
 
@@ -64,19 +64,20 @@ class _HomeState extends State<Home> {
       body: ListView.builder(
         controller: _scrollController,
         itemCount: images.length,
-        itemBuilder: (context, index) => Container(
+        itemBuilder: (context, index) => 
+          Container(
             margin: EdgeInsets.only(top: 8),
             child: CarouselSlider(
               options: CarouselOptions(
-                height: 216,
                 enlargeCenterPage: true,
                 aspectRatio: 16/9,
-                autoPlayCurve: Curves.fastLinearToSlowEaseIn,
+                autoPlayCurve: Curves.fastOutSlowIn,
+                height: 165,
                 enableInfiniteScroll: true,
-                viewportFraction: 0.9
+                viewportFraction: 0.8
               ),
               items: <Widget>[
-                Image.network('https://picsum.photos/384/216'),
+                Image.network('${images[index]}'),
               ],  
             ),
           )
