@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:random_gallery/screensize_reducers.dart';
+import 'package:random_gallery/screen_size_reducers.dart';
 
 void main() {
   runApp(MaterialApp(
