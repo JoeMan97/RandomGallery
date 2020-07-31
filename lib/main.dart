@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
+import 'package:carousel_slider/carousel_slider.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -14,14 +15,14 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final List<String> dogImages = new List();
+  final List<String> images = new List();
   ScrollController _scrollController = new ScrollController();
 
   fetchImages() async {
     Response response = await get('https://dog.ceo/api/breeds/image/random');
     if (response.statusCode == 200) {
       setState(() {
-        dogImages.add(json.decode(response.body)['message']);
+        images.add(json.decode(response.body)['message']);
       });
     } else {
       throw Exception('No se pudo cargar las imágenes');
@@ -62,14 +63,24 @@ class _HomeState extends State<Home> {
       ),
       body: ListView.builder(
         controller: _scrollController,
-        itemCount: dogImages.length,
-        itemBuilder: (context , index) {
-          return Container(
-            constraints: BoxConstraints.tightFor(height: 200),
-            child: Image.network(dogImages[index], fit: BoxFit.fitWidth),
-          );
-        },
-      ),
+        itemCount: images.length,
+        itemBuilder: (context, index) => Container(
+            margin: EdgeInsets.only(top: 8),
+            child: CarouselSlider(
+              options: CarouselOptions(
+                height: 216,
+                enlargeCenterPage: true,
+                aspectRatio: 16/9,
+                autoPlayCurve: Curves.fastLinearToSlowEaseIn,
+                enableInfiniteScroll: true,
+                viewportFraction: 0.9
+              ),
+              items: <Widget>[
+                Image.network('https://picsum.photos/384/216'),
+              ],  
+            ),
+          )
+      )
     );
   }
 }

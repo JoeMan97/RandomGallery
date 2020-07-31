@@ -24,6 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
   http: ^0.12.2
+  carousel_slider: ^2.2.1
   
 
 
