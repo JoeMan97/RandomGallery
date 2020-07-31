@@ -28,11 +28,15 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
 
-    dogsImages.fetchTwelve();
+    setState(() {
+      dogsImages.fetchTwelve();  
+    });
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
-        dogsImages.fetchTwelve();
+        setState(() {
+          dogsImages.fetchTwelve();  
+        });
       }
     });
   }
