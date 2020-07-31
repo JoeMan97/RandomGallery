@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:random_gallery/screensize_reducers.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -15,7 +16,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final List<String> images = new List();
+  List<String> images = new List();
   ScrollController _scrollController = new ScrollController();
 
   fetchImages() async {
@@ -44,6 +45,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+
     fetchFour();
 
     _scrollController.addListener(() {
@@ -72,12 +74,20 @@ class _HomeState extends State<Home> {
                 enlargeCenterPage: true,
                 aspectRatio: 16/9,
                 autoPlayCurve: Curves.fastOutSlowIn,
-                height: 165,
+                height: 
+                ScreenSizeReducers().screenHeightExcludingToolbar(
+                  context,
+                  dividedBy: 4
+                ) - 12.0, // no se activa el evento si coloco 16
                 enableInfiniteScroll: true,
-                viewportFraction: 0.8
+                viewportFraction: 1
               ),
               items: <Widget>[
-                Image.network('${images[index]}'),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8.0),
+                  child: 
+                  Image.network('${images[index]}')
+                ),
               ],  
             ),
           )
