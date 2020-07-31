@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ScreenSizeReducers {
+class ScreensizeReducers {
   Size screenSize(BuildContext context) {
     return MediaQuery.of(context).size;
   }
